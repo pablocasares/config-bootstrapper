@@ -12,7 +12,7 @@ public class BootstrapperBuilder {
     private static final Logger log = LoggerFactory.getLogger(BootstrapperBuilder.class);
 
     Config config;
-    String className;
+    String className = "io.wizzie.bootstrapper.bootstrappers.impl.DummyBootstrapper";
     List<Listener> listeners;
     String filePath;
     Map<String, Object> configMap;
@@ -45,7 +45,7 @@ public class BootstrapperBuilder {
         return this;
     }
 
-    public BootstrapperBuilder withConfigInstance(Config config){
+    public BootstrapperBuilder withConfigInstance(Config config) {
         this.config = config;
         return this;
     }
@@ -72,9 +72,6 @@ public class BootstrapperBuilder {
             bootstrapper = null;
         }
 
-        if (bootstrapper != null && bootstrapper instanceof ThreadBootstrapper) {
-            ((ThreadBootstrapper) bootstrapper).start();
-        }
 
         return bootstrapper;
     }

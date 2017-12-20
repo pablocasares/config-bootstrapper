@@ -4,6 +4,12 @@ The config bootstrapper is a library that allows us to load configuration from d
 
 Currently, the library has two bootstrapper:
 
+### DummyBootstrapper
+
+`io.wizzie.bootstrapper.bootstrappers.impl.DummyBootstrapper`
+
+The DummyBootstrapper does nothing. It is only used to load base config file, but it doesn't load bootstrapping config.
+
 ### FileBootstrapper
 
 `io.wizzie.bootstrapper.bootstrappers.impl.FileBootstrapper`
