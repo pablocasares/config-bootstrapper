@@ -65,6 +65,10 @@ public class BootstrapperBuilder {
             if(config == null ) config = new Config(filePath, configMap);
 
             bootstrapper.prepare(config, listeners);
+
+            if (bootstrapper instanceof ThreadBootstrapper) {
+                ((ThreadBootstrapper) bootstrapper).start();
+            }
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
             log.error(String.format("Can't build the bootstrapper class [%s]", className), e);
         } catch (Exception e) {

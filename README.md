@@ -32,3 +32,14 @@ The KafkaBootstrapper loads a configuration from kafka topic. This bootstrapper 
 | `bootstrap.kafka.topics`      | Topics that are used to read the bootstrapper configuration      |
 | `application.id`      | The app id to identify the client configuration      |
 | `bootstrap.servers`      | The kafka broker to read the bootstrapper configuration      |
+
+### KafkaNoFilterBootstrapper 
+
+`io.wizzie.bootstrapper.bootstrappers.impl.KafkaNoFilterBootstrapper`
+
+The KafkaNoFilterBootstrapper loads a configuration from kafka topic. This bootstrapper can subscribe to kafka topic to load new configuration at runtime. It loads all configurations inside bootstrapper topics. It passes the source topic, source key, and source value with configuration.
+
+| Property     | Description     | 
+| :------------- | :-------------  | 
+| `bootstrap.kafka.topics`      | Topics that are used to read the bootstrapper configuration      |
+| `bootstrap.servers`      | The kafka broker to read the bootstrapper configuration      |
