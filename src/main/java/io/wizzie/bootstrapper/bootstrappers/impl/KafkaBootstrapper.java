@@ -62,12 +62,13 @@ public class KafkaBootstrapper extends ThreadBootstrapper {
             endOffsets.put(storePartition, endOffset);
         }
 
-        // restore the state from the beginning of the change log otherwise
-        restoreConsumer.seekToBeginning(storePartitions);
-
         for (Map.Entry<TopicPartition, Long> entry : endOffsets.entrySet()) {
             long offset = 0L;
             String jsonStreamConfig = null;
+
+            restoreConsumer.assign(Collections.singletonList(entry.getKey()));
+            // restore the state from the beginning of the change log otherwise
+            restoreConsumer.seekToBeginning(Collections.singletonList(entry.getKey()));
 
             while (offset < entry.getValue()) {
                 for (ConsumerRecord<String, String> record : restoreConsumer.poll(100).records(entry.getKey())) {
@@ -90,16 +91,16 @@ public class KafkaBootstrapper extends ThreadBootstrapper {
     public void run() {
         currentThread().setName("KafkaBootstrapper");
 
+        restoreConsumer.assign(storePartitions);
+
         while (!closed.get()) {
             log.debug("Searching stream configuration with app id [{}]", appId);
             try {
-                for (TopicPartition storePartition : storePartitions) {
-                    for (ConsumerRecord<String, String> record : restoreConsumer.poll(5000).records(storePartition.topic())) {
-                        System.out.println(record);
-                        if (record.key() != null && record.key().equals(appId)) {
-                            log.info("Find stream configuration with app id [{}]", appId);
-                            update(new SourceSystem("kafka", storePartition.topic()), record.value());
-                        }
+                for (ConsumerRecord<String, String> record : restoreConsumer.poll(5000)) {
+                    System.out.println(record);
+                    if (record.key() != null && record.key().equals(appId)) {
+                        log.info("Find stream configuration with app id [{}]", appId);
+                        update(new SourceSystem("kafka", record.topic()), record.value());
                     }
                 }
             } catch (WakeupException e) {

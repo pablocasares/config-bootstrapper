@@ -62,20 +62,23 @@ public class KafkaNoFilterBootstrapper extends ThreadBootstrapper {
             endOffsets.put(storePartition, endOffset);
         }
 
-        // restore the state from the beginning of the change log otherwise
-        restoreConsumer.seekToBeginning(storePartitions);
-
         for (Map.Entry<TopicPartition, Long> entry : endOffsets.entrySet()) {
             long offset = 0L;
 
+            restoreConsumer.assign(Collections.singletonList(entry.getKey()));
+            // restore the state from the beginning of the change log otherwise
+            restoreConsumer.seekToBeginning(Collections.singletonList(entry.getKey()));
+
+            log.info("Loading streams from [{}] ...", entry.getKey());
             while (offset < entry.getValue()) {
                 for (ConsumerRecord<String, String> record : restoreConsumer.poll(100).records(entry.getKey())) {
                     if (record.key() != null) {
                         log.info("Find stream configuration with record key id [{}] inside topic [{}]", record.key(),
                                 record.topic());
                         update(new SourceSystem("kafka", entry.getKey().topic(), record.key()), record.value());
+                    } else {
+                        log.warn("Found stream configuration with record key [null] inside topic [{}]", record.topic());
                     }
-
                 }
                 offset = restoreConsumer.position(entry.getKey());
                 log.info("Recover from kafka offset[{}], endOffset[{}]", offset, entry.getValue());
@@ -87,15 +90,15 @@ public class KafkaNoFilterBootstrapper extends ThreadBootstrapper {
     public void run() {
         currentThread().setName("KafkaNoFilterBootstrapper");
 
+        restoreConsumer.assign(storePartitions);
+
         while (!closed.get()) {
             try {
-                for (TopicPartition storePartition : storePartitions) {
-                    for (ConsumerRecord<String, String> record : restoreConsumer.poll(5000).records(storePartition.topic())) {
-                        if (record.key() != null) {
-                            log.info("Find stream configuration with record key id [{}] inside topic [{}]", record.key(),
-                                    record.topic());
-                            update(new SourceSystem("kafka", storePartition.topic(), record.key()), record.value());
-                        }
+                for (ConsumerRecord<String, String> record : restoreConsumer.poll(5000)) {
+                    if (record.key() != null) {
+                        log.info("Find stream configuration with record key id [{}] inside topic [{}]", record.key(),
+                                record.topic());
+                        update(new SourceSystem("kafka", record.topic(), record.key()), record.value());
                     }
                 }
             } catch (WakeupException e) {
