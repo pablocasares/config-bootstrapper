@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.apache.kafka.clients.consumer.ConsumerConfig.*;
@@ -115,6 +116,7 @@ public class KafkaBootstrapper extends ThreadBootstrapper {
     public void close() {
         closed.set(true);
         restoreConsumer.wakeup();
+        restoreConsumer.close(1 , TimeUnit.MINUTES);
         log.info("Stop KafkaBootstrapper service");
     }
 }
