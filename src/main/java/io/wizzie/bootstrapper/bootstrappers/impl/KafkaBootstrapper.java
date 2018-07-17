@@ -113,10 +113,9 @@ public class KafkaBootstrapper extends ThreadBootstrapper {
     }
 
     @Override
-    public void close() {
+    public synchronized void close() {
         closed.set(true);
         restoreConsumer.wakeup();
-        restoreConsumer.close(1 , TimeUnit.MINUTES);
         log.info("Stop KafkaBootstrapper service");
     }
 }
