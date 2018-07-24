@@ -8,6 +8,18 @@
 
     <packaging>jar</packaging>
 
+    <name>Wizzie config-bootstrapper library</name>
+    <description>The Wizzie config-bootstrapper library project</description>
+    <url>https://github.com/wizzie-io/config-bootstrapper</url>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
     <distributionManagement>
         <snapshotRepository>
             <id>ossrh</id>
