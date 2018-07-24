@@ -4,7 +4,7 @@
 
     <groupId>io.wizzie</groupId>
     <artifactId>config-bootstrapper</artifactId>
-    <version>0.0.7</version>
+    <version>0.0.8-SNAPSHOT</version>
 
     <packaging>jar</packaging>
 
@@ -45,7 +45,7 @@
     <scm>
         <developerConnection>scm:git:git@github.com:wizzie-io/config-bootstrapper.git</developerConnection>
         <connection>scm:git:git@github.com:wizzie-io/config-bootstrapper.git</connection>
-        <tag>config-bootstrapper-0.0.7</tag>
+        <tag>HEAD</tag>
         <url>https://github.com/wizzie-io/config-bootstrapper.git</url>
     </scm>
 
