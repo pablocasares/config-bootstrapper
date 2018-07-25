@@ -39,7 +39,7 @@ jobs:
       - setup_remote_docker
       - deploy:
           name: Deploy
-          command: mvn deploy -DskipTests
+          command: mvn -s .circleci/maven-settings.xml deploy -DskipTests
 workflows:
   version: 2
   test-n-deploy:
