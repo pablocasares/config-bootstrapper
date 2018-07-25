@@ -1,4 +1,6 @@
 [![CircleCI](https://circleci.com/gh/wizzie-io/config-bootstrapper/tree/master.svg?style=svg)](https://circleci.com/gh/wizzie-io/config-bootstrapper/tree/master)
+[![GitHub release](https://img.shields.io/github/release/wizzie-io/config-bootstrapper.svg)](https://github.com/wizzie-io/config-bootstrapper/releases/latest) 
+[![wizzie-io](https://img.shields.io/badge/powered%20by-wizzie.io-F68D2E.svg)](https://github.com/wizzie-io/)
 
 # Config Bootstrapper Library
 
