@@ -5,9 +5,6 @@ preconfiguration: &preconfiguration
   environment:
     - APP_NAME: "config-bootstrapper"
 
-image: &cached
-    paths:
-      - config-bootstrapper.tar
 workspace: &workspace
     at: /config-bootstrapper/caches
 
@@ -33,9 +30,6 @@ jobs:
           key: maven-cache-v2-{{ checksum "pom.xml" }}
           paths:
             - ~/.m2
-      - persist_to_workspace:
-          root: caches
-          <<: *cached
   deploy:
     <<: *preconfiguration
     steps:
