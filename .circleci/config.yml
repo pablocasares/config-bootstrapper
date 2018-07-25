@@ -53,6 +53,6 @@ workflows:
             - tests
           filters:
             branches:
-              only: /.*/
+              only: master
             tags:
               only: /.*/
