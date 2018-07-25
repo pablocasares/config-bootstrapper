@@ -26,8 +26,7 @@ jobs:
             - maven-cache-v2-{{ checksum "pom.xml" }}
       - run:
           name: Test library
-          command: |
-            mvn test
+          command: mvn test
       - save_cache:
           key: maven-cache-v2-{{ checksum "pom.xml" }}
           paths:
@@ -43,8 +42,7 @@ jobs:
       - setup_remote_docker
       - deploy:
           name: Deploy
-          command: |
-          mvn deploy
+          command: mvn deploy
 workflows:
   version: 2
   test-n-deploy:
