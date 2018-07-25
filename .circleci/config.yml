@@ -33,12 +33,13 @@ jobs:
   deploy:
     <<: *preconfiguration
     steps:
+      - checkout
       - attach_workspace:
           <<: *workspace
       - setup_remote_docker
       - deploy:
           name: Deploy
-          command: mvn deploy
+          command: mvn deploy -DskipTests
 workflows:
   version: 2
   test-n-deploy:
@@ -52,6 +53,6 @@ workflows:
             - tests
           filters:
             branches:
-              only: master
+              only: /.*/
             tags:
               only: /.*/
