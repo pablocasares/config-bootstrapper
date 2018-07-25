@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/wizzie-io/config-bootstrapper/tree/master.svg?style=svg)](https://circleci.com/gh/wizzie-io/config-bootstrapper/tree/master)
+
 # Config Bootstrapper Library
 
 The config bootstrapper is a library that allows us to load configuration from different sources: kafka, filesystem or other datastore. Depends on the source the library can load the last configuration and offer it to the user application or also it can load the new configuration, for example via Kafka.
