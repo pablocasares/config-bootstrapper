@@ -1,5 +1,5 @@
 preconfiguration: &preconfiguration
-  working_directory: /normalizer
+  working_directory: /config-bootstrapper
   docker:
     - image: gcr.io/wizzie-registry/data-builder:stable
   environment:
