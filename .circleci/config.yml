@@ -1,0 +1,58 @@
+preconfiguration: &preconfiguration
+  working_directory: /config-bootstrapper
+  docker:
+    - image: gcr.io/wizzie-registry/data-builder:stable
+  environment:
+    - APP_NAME: "config-bootstrapper"
+
+workspace: &workspace
+    at: /config-bootstrapper/caches
+
+
+
+version: 2
+jobs:
+  tests:
+    <<: *preconfiguration
+    steps:
+      - checkout
+      - setup_remote_docker
+
+      - restore_cache:
+          keys:
+            - maven-cache-v2-{{ checksum "pom.xml" }}
+      - run:
+          name: Test library
+          command: |
+            mvn test
+            mkdir caches
+      - save_cache:
+          key: maven-cache-v2-{{ checksum "pom.xml" }}
+          paths:
+            - ~/.m2
+  deploy:
+    <<: *preconfiguration
+    steps:
+      - checkout
+      - attach_workspace:
+          <<: *workspace
+      - setup_remote_docker
+      - deploy:
+          name: Deploy
+          command: mvn -s .circleci/maven-settings.xml deploy -DskipTests
+workflows:
+  version: 2
+  test-n-deploy:
+    jobs:
+      - tests:
+          filters:
+            tags:
+              only: /.*/
+      - deploy:
+          requires:
+            - tests
+          filters:
+            branches:
+              only: master
+            tags:
+              only: /.*/
